@@ -1,7 +1,9 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { TouchableOpacity, Text } from "react-native";
 import "react-native-reanimated";
 
 export {
@@ -32,6 +34,7 @@ export default function RootLayout() {
 	useEffect(() => {
 		if (loaded) {
 			SplashScreen.hideAsync();
+			router.push("/(modals)/login");
 		}
 	}, [loaded]);
 
@@ -45,6 +48,32 @@ export default function RootLayout() {
 function RootLayoutNav() {
 	return (
 		<Stack>
+			<Stack.Screen
+				name="(modals)/login"
+				options={{
+					presentation: "modal",
+					title: "Log In or Sign Up",
+					headerTitleStyle: { fontFamily: "Montserrat-SemiBold" },
+					headerLeft: () => (
+						<TouchableOpacity onPress={() => router.back()}>
+							<Ionicons name="close-outline" size={24} />
+						</TouchableOpacity>
+					),
+				}}
+			/>
+			<Stack.Screen name="listing/[id]" options={{ headerTitle: "" }} />
+			<Stack.Screen
+				name="(modals)/booking"
+				options={{
+					presentation: "transparentModal",
+					animation: "fade",
+					headerLeft: () => (
+						<TouchableOpacity onPress={() => router.back()}>
+							<Ionicons name="close-outline" size={24} />
+						</TouchableOpacity>
+					),
+				}}
+			/>
 			<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 		</Stack>
 	);
