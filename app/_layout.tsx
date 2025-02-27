@@ -3,8 +3,8 @@ import { useFonts } from "expo-font";
 import { Stack, router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { TouchableOpacity, Text } from "react-native";
-import "react-native-reanimated";
+import { TouchableOpacity } from "react-native";
+import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -18,6 +18,12 @@ export const unstable_settings = {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+const clerkPublishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+
+if (!clerkPublishableKey) {
+  throw new Error("Missing Clerk Publishable Key");
+}
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -42,7 +48,13 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <ClerkProvider publishableKey={clerkPublishableKey}>
+      <ClerkLoaded>
+        <RootLayoutNav />
+      </ClerkLoaded>
+    </ClerkProvider>
+  );
 }
 
 function RootLayoutNav() {
