@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { tokenCache } from "@/lib/cache";
+import { useAuth } from "@clerk/clerk-expo";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -27,7 +28,7 @@ if (!clerkPublishableKey) {
 }
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
+  const [isLoadedFonts, errorFonts] = useFonts({
     Montserrat: require("../assets/fonts/Montserrat-Regular.ttf"),
     "Montserrat-Bold": require("../assets/fonts/Montserrat-Bold.ttf"),
     "Montserrat-SemiBold": require("../assets/fonts/Montserrat-SemiBold.ttf"),
@@ -35,17 +36,16 @@ export default function RootLayout() {
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+    if (errorFonts) throw errorFonts;
+  }, [errorFonts]);
 
   useEffect(() => {
-    if (loaded) {
+    if (isLoadedFonts) {
       SplashScreen.hideAsync();
-      router.push("/(modals)/login");
     }
-  }, [loaded]);
+  }, [isLoadedFonts]);
 
-  if (!loaded) {
+  if (!isLoadedFonts) {
     return null;
   }
 
@@ -59,6 +59,18 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const { isLoaded: isLoadedClerk, isSignedIn } = useAuth();
+
+  if (!isLoadedClerk) {
+    return null;
+  }
+
+  useEffect(() => {
+    if (isLoadedClerk && !isSignedIn) {
+      router.push("/(modals)/login");
+    }
+  }, [isLoadedClerk]);
+
   return (
     <Stack>
       <Stack.Screen
