@@ -5,16 +5,45 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import { useAuth } from "@clerk/clerk-expo";
+import { useSSO } from "@clerk/clerk-expo";
 import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
 import { Ionicons } from "@expo/vector-icons";
+import * as WebBrowser from "expo-web-browser";
+import { useCallback } from "react";
+import { useRouter } from "expo-router";
+
+enum Strategy {
+  GOOGLE = "oauth_google",
+  APPLE = "oauth_apple",
+}
+
+// Handle any pending authentication sessions
+WebBrowser.maybeCompleteAuthSession();
 
 const Login = () => {
   useWarmUpBrowser();
 
-  const { isSignedIn } = useAuth();
+  const router = useRouter();
+
+  const { startSSOFlow: googleAuth } = useSSO();
+  const { startSSOFlow: appleAuth } = useSSO();
+
+  const onSelectAuth = useCallback(async (strategy: Strategy) => {
+    const startSSOFlow = strategy === Strategy.GOOGLE ? googleAuth : appleAuth;
+    try {
+      const { createdSessionId, setActive, signIn, signUp } =
+        await startSSOFlow({ strategy });
+
+      if (createdSessionId) {
+        setActive!({ session: createdSessionId });
+        router.back();
+      }
+    } catch (error) {
+      console.error(JSON.stringify(error, null, 2));
+    }
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -36,7 +65,9 @@ const Login = () => {
             borderBottomWidth: StyleSheet.hairlineWidth,
           }}
         />
+
         <Text style={styles.seperator}>or</Text>
+
         <View
           style={{
             flex: 1,
@@ -47,7 +78,10 @@ const Login = () => {
       </View>
 
       <View style={{ gap: 20 }}>
-        <TouchableOpacity style={styles.btnOutline}>
+        <TouchableOpacity
+          style={styles.btnOutline}
+          onPress={() => console.log("Not implemented!")}
+        >
           <Ionicons
             name="mail-outline"
             size={24}
@@ -56,12 +90,18 @@ const Login = () => {
           <Text style={styles.btnOutlineText}>Continue with Phone</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnOutline} onPress={() => null}>
+        <TouchableOpacity
+          style={styles.btnOutline}
+          onPress={() => onSelectAuth(Strategy.APPLE)}
+        >
           <Ionicons name="logo-apple" size={24} style={defaultStyles.btnIcon} />
           <Text style={styles.btnOutlineText}>Continue with Apple</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnOutline} onPress={() => null}>
+        <TouchableOpacity
+          style={styles.btnOutline}
+          onPress={() => onSelectAuth(Strategy.GOOGLE)}
+        >
           <Ionicons
             name="logo-google"
             size={24}
@@ -108,6 +148,6 @@ const styles = StyleSheet.create({
   btnOutlineText: {
     color: "#000",
     fontSize: 16,
-    fontFamily: "mon-sb",
+    fontFamily: "Montserrat-SemiBold",
   },
 });
