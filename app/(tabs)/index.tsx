@@ -1,16 +1,22 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { Link } from "expo-router";
+import { Stack } from "expo-router";
+import Listings from "@/components/Listings";
+import ListingsBottomSheet from "@/components/ListingsBottomSheet";
+import ExploreHeader from "@/components/ExploreHeader";
 
 const index = () => {
-	return (
-		<View>
-			<Text>index</Text>
-			<Link href={"/(modals)/login"}>Login</Link>
-			<Link href={"/(modals)/booking"}>Bookings</Link>
-			<Link href={"/listing/232"}>Listing details</Link>
-		</View>
-	);
+  return (
+    <View style={{ flex: 1, marginTop: 80 }}>
+      <Stack.Screen
+        options={{
+          header: () => <ExploreHeader />,
+        }}
+      />
+      <Listings />
+      <ListingsBottomSheet />
+    </View>
+  );
 };
 
 export default index;
