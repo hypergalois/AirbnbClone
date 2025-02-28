@@ -1,12 +1,14 @@
 import { View, Text } from "react-native";
-import React from "react";
+import { useAuth } from "@clerk/clerk-expo";
 
 const Login = () => {
-	return (
-		<View>
-			<Text>Login</Text>
-		</View>
-	);
+  const { isSignedIn } = useAuth();
+
+  return (
+    <View>
+      <Text>{isSignedIn ? "Signed in" : "Not signed in"}</Text>
+    </View>
+  );
 };
 
 export default Login;
