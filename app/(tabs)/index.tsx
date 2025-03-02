@@ -1,21 +1,19 @@
 import { View, Text } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Stack } from "expo-router";
 import Listings from "@/components/Listings";
 import ListingsBottomSheet from "@/components/ListingsBottomSheet";
 import ExploreHeader from "@/components/ExploreHeader";
+import listingData from "@/assets/data/airbnb-listings.json";
 
 const index = () => {
   const [category, setCategory] = React.useState("Tiny homes");
+  const items = useMemo(() => listingData, []);
 
   const onCategoryChanged = (category: string) => {
     console.log("category changed", category);
     setCategory(category);
   };
-
-  useEffect(() => {
-    console.log("reload listings");
-  }, [category]);
 
   return (
     <View style={{ flex: 1, marginTop: 80 }}>
@@ -24,7 +22,7 @@ const index = () => {
           header: () => <ExploreHeader onCategoryChanged={onCategoryChanged} />,
         }}
       />
-      <Listings listings={[]} category={category} />
+      <Listings listings={items} category={category} />
       <ListingsBottomSheet />
     </View>
   );
