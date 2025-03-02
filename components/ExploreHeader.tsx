@@ -65,6 +65,7 @@ const ExploreHeader = ({ onCategoryChanged }: Props) => {
     });
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    onCategoryChanged(categories[index].name);
   };
 
   return (

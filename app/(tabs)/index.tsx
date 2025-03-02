@@ -6,11 +6,17 @@ import ListingsBottomSheet from "@/components/ListingsBottomSheet";
 import ExploreHeader from "@/components/ExploreHeader";
 
 const index = () => {
+  const [category, setCategory] = React.useState("Tiny homes");
+
+  const onCategoryChanged = (category: string) => {
+    null;
+  };
+
   return (
     <View style={{ flex: 1, marginTop: 80 }}>
       <Stack.Screen
         options={{
-          header: () => <ExploreHeader />,
+          header: () => <ExploreHeader onCategoryChanged={onCategoryChanged} />,
         }}
       />
       <Listings />
