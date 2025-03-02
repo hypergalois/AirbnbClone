@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Stack } from "expo-router";
 import Listings from "@/components/Listings";
 import ListingsBottomSheet from "@/components/ListingsBottomSheet";
@@ -9,8 +9,13 @@ const index = () => {
   const [category, setCategory] = React.useState("Tiny homes");
 
   const onCategoryChanged = (category: string) => {
-    null;
+    console.log("category changed", category);
+    setCategory(category);
   };
+
+  useEffect(() => {
+    console.log("reload listings");
+  }, [category]);
 
   return (
     <View style={{ flex: 1, marginTop: 80 }}>
@@ -19,7 +24,7 @@ const index = () => {
           header: () => <ExploreHeader onCategoryChanged={onCategoryChanged} />,
         }}
       />
-      <Listings />
+      <Listings listings={[]} category={category} />
       <ListingsBottomSheet />
     </View>
   );

@@ -1,7 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const Listings = () => {
+interface Props {
+  listings: Array<any>;
+  category: string;
+}
+
+const Listings = ({ listings, category }: Props) => {
   return (
     <View>
       <Text>Listings</Text>
