@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const ListingsMap = () => {
+const ModalHeaderText = () => {
   return (
     <View>
-      <Text>ListingsMap</Text>
+      <Text>ModalHeaderText</Text>
     </View>
   );
 };
 
-export default ListingsMap;
+export default ModalHeaderText;
