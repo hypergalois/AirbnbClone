@@ -5,6 +5,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  Share,
 } from "react-native";
 import React from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
@@ -28,6 +29,17 @@ const Listing = () => {
   const listing = (listingsData as any[]).find((item) => item.id === id);
   const navigation = useNavigation();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
+
+  const shareListing = async () => {
+    try {
+      await Share.share({
+        title: listing.name,
+        url: listing.listing_url,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const scrollOffset = useScrollViewOffset(scrollRef);
 
