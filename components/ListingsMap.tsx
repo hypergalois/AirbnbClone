@@ -1,5 +1,9 @@
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
+import { defaultStyles } from "@/constants/Styles";
+import MapView from "react-native-maps";
+import { Ionicons } from "@expo/vector-icons";
+import Colors from "@/constants/Colors";
 
 interface Props {
   listings: any;
@@ -7,8 +11,11 @@ interface Props {
 
 const ListingsMap = ({ listings }: Props) => {
   return (
-    <View>
-      <Text>ListingsMap</Text>
+    <View style={defaultStyles.container}>
+      <MapView style={StyleSheet.absoluteFillObject}></MapView>
+      <TouchableOpacity style={styles.locateBtn} onPress={() => {}}>
+        <Ionicons name="navigate" size={24} color={Colors.dark} />
+      </TouchableOpacity>
     </View>
   );
 };
