@@ -1,8 +1,18 @@
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import React from "react";
 import { useLocalSearchParams } from "expo-router";
 import listingsData from "@/assets/data/airbnb-listings.json";
 import Colors from "@/constants/Colors";
+import { defaultStyles } from "@/constants/Styles";
+import { Ionicons } from "@expo/vector-icons";
+import Animated, { SlideInDown, useAnimatedRef } from "react-native-reanimated";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
@@ -10,10 +20,84 @@ const { width } = Dimensions.get("window");
 const Listing = () => {
   const { id } = useLocalSearchParams();
   const listing = (listingsData as any[]).find((item) => item.id === id);
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
+
+  const imageAnimatedStyle = null;
 
   return (
-    <View>
-      <Text>{listing.name}</Text>
+    <View style={styles.container}>
+      <Animated.ScrollView
+        contentContainerStyle={{ paddingBottom: 100 }}
+        ref={scrollRef}
+        scrollEventThrottle={16}
+      >
+        <Animated.Image
+          source={{ uri: listing.xl_picture_url }}
+          style={[styles.image, imageAnimatedStyle]}
+          resizeMode="cover"
+        />
+
+        <View style={styles.infoContainer}>
+          <Text style={styles.name}>{listing.name}</Text>
+          <Text style={styles.location}>
+            {listing.room_type} in {listing.smart_location}
+          </Text>
+          <Text style={styles.rooms}>
+            {listing.guests_included} guests · {listing.bedrooms} bedrooms ·{" "}
+            {listing.beds} bed · {listing.bathrooms} bathrooms
+          </Text>
+          <View style={{ flexDirection: "row", gap: 4 }}>
+            <Ionicons name="star" size={16} />
+            <Text style={styles.ratings}>
+              {listing.review_scores_rating / 20} · {listing.number_of_reviews}{" "}
+              reviews
+            </Text>
+          </View>
+          <View style={styles.divider} />
+
+          <View style={styles.hostView}>
+            <Image
+              source={{ uri: listing.host_picture_url }}
+              style={styles.host}
+            />
+
+            <View>
+              <Text style={{ fontWeight: "500", fontSize: 16 }}>
+                Hosted by {listing.host_name}
+              </Text>
+              <Text>Host since {listing.host_since}</Text>
+            </View>
+          </View>
+
+          <View style={styles.divider} />
+
+          <Text style={styles.description}>{listing.description}</Text>
+        </View>
+      </Animated.ScrollView>
+
+      <Animated.View
+        style={defaultStyles.footer}
+        entering={SlideInDown.delay(200)}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity style={styles.footerText}>
+            <Text style={styles.footerPrice}>€{listing.price}</Text>
+            <Text>night</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[defaultStyles.btn, { paddingRight: 20, paddingLeft: 20 }]}
+          >
+            <Text style={defaultStyles.btnText}>Reserve</Text>
+          </TouchableOpacity>
+        </View>
+      </Animated.View>
     </View>
   );
 };
