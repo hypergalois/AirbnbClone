@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { defaultStyles } from "@/constants/Styles";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
 
@@ -12,7 +12,23 @@ interface Props {
 const ListingsMap = ({ listings }: Props) => {
   return (
     <View style={defaultStyles.container}>
-      <MapView style={StyleSheet.absoluteFillObject}></MapView>
+      <MapView style={StyleSheet.absoluteFillObject}>
+        {/* Render all our marker as usual */}
+        {listings.features.map((item: any) => (
+          <Marker
+            coordinate={{
+              latitude: item.properties.latitude,
+              longitude: item.properties.longitude,
+            }}
+            key={item.properties.id}
+            onPress={() => null}
+          >
+            <View style={styles.marker}>
+              <Text style={styles.markerText}>€ {item.properties.price}</Text>
+            </View>
+          </Marker>
+        ))}
+      </MapView>
       <TouchableOpacity style={styles.locateBtn} onPress={() => {}}>
         <Ionicons name="navigate" size={24} color={Colors.dark} />
       </TouchableOpacity>
