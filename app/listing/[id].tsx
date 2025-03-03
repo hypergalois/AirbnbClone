@@ -7,7 +7,7 @@ import {
   Image,
   Share,
 } from "react-native";
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import listingsData from "@/assets/data/airbnb-listings.json";
 import Colors from "@/constants/Colors";
@@ -40,6 +40,43 @@ const Listing = () => {
       console.log(err);
     }
   };
+
+  const headerAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(scrollOffset.value, [0, IMG_HEIGHT / 1.5], [0, 1]),
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: "",
+      headerTransparent: true,
+
+      headerBackground: () => (
+        <Animated.View
+          style={[headerAnimatedStyle, styles.header]}
+        ></Animated.View>
+      ),
+      headerRight: () => (
+        <View style={styles.bar}>
+          <TouchableOpacity style={styles.roundButton} onPress={shareListing}>
+            <Ionicons name="share-outline" size={22} color={"#000"} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.roundButton}>
+            <Ionicons name="heart-outline" size={22} color={"#000"} />
+          </TouchableOpacity>
+        </View>
+      ),
+      headerLeft: () => (
+        <TouchableOpacity
+          style={styles.roundButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name="chevron-back" size={24} color={"#000"} />
+        </TouchableOpacity>
+      ),
+    });
+  }, []);
 
   const scrollOffset = useScrollViewOffset(scrollRef);
 
