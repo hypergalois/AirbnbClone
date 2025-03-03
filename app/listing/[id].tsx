@@ -7,12 +7,18 @@ import {
   Image,
 } from "react-native";
 import React from "react";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import listingsData from "@/assets/data/airbnb-listings.json";
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
 import { Ionicons } from "@expo/vector-icons";
-import Animated, { SlideInDown, useAnimatedRef } from "react-native-reanimated";
+import Animated, {
+  interpolate,
+  SlideInDown,
+  useAnimatedRef,
+  useAnimatedStyle,
+  useScrollViewOffset,
+} from "react-native-reanimated";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
@@ -20,9 +26,31 @@ const { width } = Dimensions.get("window");
 const Listing = () => {
   const { id } = useLocalSearchParams();
   const listing = (listingsData as any[]).find((item) => item.id === id);
+  const navigation = useNavigation();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
 
-  const imageAnimatedStyle = null;
+  const scrollOffset = useScrollViewOffset(scrollRef);
+
+  const imageAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: interpolate(
+            scrollOffset.value,
+            [-IMG_HEIGHT, 0, IMG_HEIGHT, IMG_HEIGHT],
+            [-IMG_HEIGHT / 2, 0, IMG_HEIGHT * 0.75]
+          ),
+        },
+        {
+          scale: interpolate(
+            scrollOffset.value,
+            [-IMG_HEIGHT, 0, IMG_HEIGHT],
+            [2, 1, 1]
+          ),
+        },
+      ],
+    };
+  });
 
   return (
     <View style={styles.container}>
@@ -120,22 +148,22 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 26,
     fontWeight: "bold",
-    fontFamily: "mon-sb",
+    fontFamily: "Montserrat-SemiBold",
   },
   location: {
     fontSize: 18,
     marginTop: 10,
-    fontFamily: "mon-sb",
+    fontFamily: "Montserrat-SemiBold",
   },
   rooms: {
     fontSize: 16,
     color: Colors.grey,
     marginVertical: 4,
-    fontFamily: "mon",
+    fontFamily: "Montserrat",
   },
   ratings: {
     fontSize: 16,
-    fontFamily: "mon-sb",
+    fontFamily: "Montserrat-SemiBold",
   },
   divider: {
     height: StyleSheet.hairlineWidth,
@@ -162,7 +190,7 @@ const styles = StyleSheet.create({
   },
   footerPrice: {
     fontSize: 18,
-    fontFamily: "mon-sb",
+    fontFamily: "Montserrat-SemiBold",
   },
   roundButton: {
     width: 40,
@@ -189,6 +217,6 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 16,
     marginTop: 10,
-    fontFamily: "mon",
+    fontFamily: "Montserrat",
   },
 });
