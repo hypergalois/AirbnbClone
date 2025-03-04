@@ -19,7 +19,7 @@ const index = () => {
   };
 
   return (
-    <View style={{ flex: 1, marginTop: 80 }}>
+    <View style={{ flex: 1, marginTop: 70 }}>
       <Stack.Screen
         options={{
           header: () => <ExploreHeader onCategoryChanged={onCategoryChanged} />,

@@ -83,6 +83,7 @@ const ListingsMap = ({ listings }: Props) => {
         clusterColor="#fff"
         clusterTextColor="#000"
         clusterFontFamily="Montserrat-SemiBold"
+        showsUserLocation
       >
         {/* Render all our marker as usual */}
         {listings.features.map((item: any) => (

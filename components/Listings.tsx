@@ -2,7 +2,6 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList,
   TouchableOpacity,
   ListRenderItem,
 } from "react-native";
@@ -11,6 +10,10 @@ import { defaultStyles } from "@/constants/Styles";
 import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
+import {
+  BottomSheetFlatList,
+  BottomSheetFlatListMethods,
+} from "@gorhom/bottom-sheet";
 
 interface Props {
   listings: Array<any>;
@@ -20,7 +23,7 @@ interface Props {
 
 const Listings = ({ listings, category, refresh }: Props) => {
   const [loading, setLoading] = React.useState(true);
-  const listRef = React.useRef<FlatList | null>(null);
+  const listRef = React.useRef<BottomSheetFlatListMethods | null>(null);
 
   useEffect(() => {
     if (refresh) {
@@ -80,7 +83,7 @@ const Listings = ({ listings, category, refresh }: Props) => {
 
   return (
     <View style={defaultStyles.container && { marginTop: 10 }}>
-      <FlatList
+      <BottomSheetFlatList
         renderItem={renderRow}
         data={loading ? [] : listings}
         ref={listRef}
