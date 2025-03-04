@@ -15,11 +15,18 @@ import { Link } from "expo-router";
 interface Props {
   listings: Array<any>;
   category: string;
+  refresh?: number;
 }
 
-const Listings = ({ listings, category }: Props) => {
+const Listings = ({ listings, category, refresh }: Props) => {
   const [loading, setLoading] = React.useState(true);
   const listRef = React.useRef<FlatList | null>(null);
+
+  useEffect(() => {
+    if (refresh) {
+      listRef.current?.scrollToOffset({ offset: 0, animated: true });
+    }
+  }, [refresh]);
 
   useEffect(() => {
     setLoading(true);
