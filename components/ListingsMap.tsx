@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { memo } from "react";
 import { defaultStyles } from "@/constants/Styles";
 import { Marker } from "react-native-maps";
 import MapView from "react-native-map-clustering";
@@ -19,7 +19,7 @@ interface Props {
   listings: any;
 }
 
-const ListingsMap = ({ listings }: Props) => {
+const ListingsMap = memo(({ listings }: Props) => {
   const router = useRouter();
   const mapRef = React.useRef<MapView>(null);
 
@@ -106,7 +106,7 @@ const ListingsMap = ({ listings }: Props) => {
       </TouchableOpacity>
     </View>
   );
-};
+});
 
 export default ListingsMap;
 
