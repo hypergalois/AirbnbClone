@@ -80,6 +80,9 @@ const ListingsMap = ({ listings }: Props) => {
         initialRegion={INITIAL_REGION}
         ref={mapRef}
         renderCluster={renderCluster}
+        clusterColor="#fff"
+        clusterTextColor="#000"
+        clusterFontFamily="Montserrat-SemiBold"
       >
         {/* Render all our marker as usual */}
         {listings.features.map((item: any) => (
