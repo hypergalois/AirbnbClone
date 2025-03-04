@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet } from "react-native";
-import React from "react";
+import React, { useMemo } from "react";
+import BottomSheet from "@gorhom/bottom-sheet";
 
 const ListingsBottomSheet = () => {
-  return (
-    <View>
-      <Text>ListingsBottomSheet</Text>
-    </View>
-  );
+  const bottomSheetRef = React.useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ["10%", "100%"], []);
+
+  return <BottomSheet ref={bottomSheetRef}></BottomSheet>;
 };
 
 export default ListingsBottomSheet;
