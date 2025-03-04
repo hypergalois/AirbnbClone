@@ -1,12 +1,37 @@
-import { View, Text, StyleSheet } from "react-native";
-import React, { useMemo } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useMemo, useState } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
+import Listings from "./Listings";
+import { Ionicons } from "@expo/vector-icons";
 
-const ListingsBottomSheet = () => {
+interface Props {
+  listings: any[];
+  category: string;
+}
+
+const ListingsBottomSheet = ({ listings, category }: Props) => {
   const bottomSheetRef = React.useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["10%", "100%"], []);
+  const [refresh, setRefresh] = useState(false);
 
-  return <BottomSheet ref={bottomSheetRef}></BottomSheet>;
+  return (
+    <BottomSheet ref={bottomSheetRef}>
+      <View style={styles.contentContainer}>
+        <Listings listings={listings} refresh={refresh} category={category} />
+        <View style={styles.absoluteView}>
+          <TouchableOpacity onPress={onShowMap} style={styles.btn}>
+            <Text style={{ fontFamily: "mon-sb", color: "#fff" }}>Map</Text>
+            <Ionicons
+              name="map"
+              size={20}
+              style={{ marginLeft: 10 }}
+              color={"#fff"}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </BottomSheet>
+  );
 };
 
 export default ListingsBottomSheet;
