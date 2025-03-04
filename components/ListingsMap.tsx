@@ -6,6 +6,7 @@ import MapView from "react-native-map-clustering";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
 import { useRouter } from "expo-router";
+import * as Location from "expo-location";
 
 const INITIAL_REGION = {
   latitude: 37.33,
@@ -20,9 +21,28 @@ interface Props {
 
 const ListingsMap = ({ listings }: Props) => {
   const router = useRouter();
+  const mapRef = React.useRef<MapView>(null);
 
   const onMarkerSelected = (event: any) => {
     router.push(`/listing/${event.properties.id}`);
+  };
+
+  const onLocateMe = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+
+    const region = {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      latitudeDelta: 7,
+      longitudeDelta: 7,
+    };
+
+    mapRef.current?.animateToRegion(region);
   };
 
   return (
@@ -30,6 +50,7 @@ const ListingsMap = ({ listings }: Props) => {
       <MapView
         style={StyleSheet.absoluteFillObject}
         initialRegion={INITIAL_REGION}
+        ref={mapRef}
       >
         {/* Render all our marker as usual */}
         {listings.features.map((item: any) => (
