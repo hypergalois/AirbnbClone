@@ -5,6 +5,13 @@ import MapView, { Marker } from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
 
+const INITIAL_REGION = {
+  latitude: 37.33,
+  longitude: -122,
+  latitudeDelta: 9,
+  longitudeDelta: 9,
+};
+
 interface Props {
   listings: any;
 }
@@ -12,7 +19,10 @@ interface Props {
 const ListingsMap = ({ listings }: Props) => {
   return (
     <View style={defaultStyles.container}>
-      <MapView style={StyleSheet.absoluteFillObject}>
+      <MapView
+        style={StyleSheet.absoluteFillObject}
+        initialRegion={INITIAL_REGION}
+      >
         {/* Render all our marker as usual */}
         {listings.features.map((item: any) => (
           <Marker
