@@ -45,12 +45,41 @@ const ListingsMap = ({ listings }: Props) => {
     mapRef.current?.animateToRegion(region);
   };
 
+  const renderCluster = (cluster: any) => {
+    const { id, geometry, onPress, properties } = cluster;
+
+    const points = properties.point_count;
+    return (
+      <Marker
+        key={`cluster-${id}`}
+        coordinate={{
+          longitude: geometry.coordinates[0],
+          latitude: geometry.coordinates[1],
+        }}
+        onPress={onPress}
+      >
+        <View style={styles.marker}>
+          <Text
+            style={{
+              color: "#000",
+              textAlign: "center",
+              fontFamily: "mon-sb",
+            }}
+          >
+            {points}
+          </Text>
+        </View>
+      </Marker>
+    );
+  };
+
   return (
     <View style={defaultStyles.container}>
       <MapView
         style={StyleSheet.absoluteFillObject}
         initialRegion={INITIAL_REGION}
         ref={mapRef}
+        renderCluster={renderCluster}
       >
         {/* Render all our marker as usual */}
         {listings.features.map((item: any) => (
@@ -68,7 +97,7 @@ const ListingsMap = ({ listings }: Props) => {
           </Marker>
         ))}
       </MapView>
-      <TouchableOpacity style={styles.locateBtn} onPress={() => {}}>
+      <TouchableOpacity style={styles.locateBtn} onPress={() => onLocateMe()}>
         <Ionicons name="navigate" size={24} color={Colors.dark} />
       </TouchableOpacity>
     </View>
