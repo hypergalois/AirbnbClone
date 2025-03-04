@@ -26,8 +26,9 @@ const index = () => {
         }}
       />
       {/* <Listings listings={items} category={category} /> */}
-      {/* <ListingsBottomSheet /> */}
+
       <ListingsMap listings={geoItems} />
+      <ListingsBottomSheet listings={items} category={category} />
     </View>
   );
 };
