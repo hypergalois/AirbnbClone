@@ -3,6 +3,7 @@ import React, { useMemo, useState } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
 import Listings from "./Listings";
 import { Ionicons } from "@expo/vector-icons";
+import Colors from "@/constants/Colors";
 
 interface Props {
   listings: any[];
@@ -20,7 +21,14 @@ const ListingsBottomSheet = ({ listings, category }: Props) => {
   };
 
   return (
-    <BottomSheet ref={bottomSheetRef}>
+    <BottomSheet
+      ref={bottomSheetRef}
+      index={1}
+      snapPoints={snapPoints}
+      enablePanDownToClose={false}
+      handleIndicatorStyle={{ backgroundColor: Colors.grey }}
+      style={styles.sheetContainer}
+    >
       <View style={styles.contentContainer}>
         <Listings listings={listings} refresh={refresh} category={category} />
         <View style={styles.absoluteView}>
