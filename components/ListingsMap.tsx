@@ -1,9 +1,11 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { defaultStyles } from "@/constants/Styles";
-import MapView, { Marker } from "react-native-maps";
+import { Marker } from "react-native-maps";
+import MapView from "react-native-map-clustering";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
+import { useRouter } from "expo-router";
 
 const INITIAL_REGION = {
   latitude: 37.33,
@@ -17,6 +19,12 @@ interface Props {
 }
 
 const ListingsMap = ({ listings }: Props) => {
+  const router = useRouter();
+
+  const onMarkerSelected = (event: any) => {
+    router.push(`/listing/${event.properties.id}`);
+  };
+
   return (
     <View style={defaultStyles.container}>
       <MapView
@@ -31,7 +39,7 @@ const ListingsMap = ({ listings }: Props) => {
               longitude: item.properties.longitude,
             }}
             key={item.properties.id}
-            onPress={() => null}
+            onPress={() => onMarkerSelected(item)}
           >
             <View style={styles.marker}>
               <Text style={styles.markerText}>€ {item.properties.price}</Text>
