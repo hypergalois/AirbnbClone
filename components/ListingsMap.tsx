@@ -63,7 +63,7 @@ const ListingsMap = ({ listings }: Props) => {
             style={{
               color: "#000",
               textAlign: "center",
-              fontFamily: "mon-sb",
+              fontFamily: "Montserrat-SemiBold",
             }}
           >
             {points}
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   markerText: {
     fontSize: 14,
-    fontFamily: "mon-sb",
+    fontFamily: "Montserrat-SemiBold",
   },
   locateBtn: {
     position: "absolute",
