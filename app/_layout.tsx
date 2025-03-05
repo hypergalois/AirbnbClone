@@ -9,6 +9,7 @@ import { tokenCache } from "@/lib/cache";
 import { useAuth } from "@clerk/clerk-expo";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ModalHeaderText from "@/components/ModalHeaderText";
+import Colors from "@/constants/Colors";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -97,10 +98,19 @@ function RootLayoutNav() {
             presentation: "transparentModal",
             animation: "fade",
             headerTransparent: true,
-            headerTitle: () => ModalHeaderText(),
+            headerTitle: (props) => <ModalHeaderText />,
             headerLeft: () => (
-              <TouchableOpacity onPress={() => router.back()}>
-                <Ionicons name="close-outline" size={24} />
+              <TouchableOpacity
+                onPress={() => router.back()}
+                style={{
+                  backgroundColor: "#fff",
+                  borderColor: Colors.grey,
+                  borderRadius: 20,
+                  borderWidth: 1,
+                  padding: 4,
+                }}
+              >
+                <Ionicons name="close-outline" size={22} />
               </TouchableOpacity>
             ),
           }}
