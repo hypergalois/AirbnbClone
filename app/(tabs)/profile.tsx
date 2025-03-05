@@ -6,12 +6,27 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  Button,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
+import { useAuth, useUser } from "@clerk/clerk-expo";
+import { defaultStyles } from "@/constants/Styles";
+import { Link } from "expo-router";
 
 const Profile = () => {
+  const { signOut, isSignedIn } = useAuth();
+  const { user } = useUser();
+
+  const [firstName, setFirstName] = useState(user?.firstName);
+  const [lastName, setLastName] = useState(user?.lastName);
+  const [email, setEmail] = useState(user?.emailAddresses[0].emailAddress);
+  const [edit, setEdit] = useState(false);
+
+  const onSaveUser = async () => {};
+  const onCaptureImage = async () => {};
+
   return (
     <SafeAreaView style={defaultStyles.container}>
       <View style={styles.headerContainer}>
