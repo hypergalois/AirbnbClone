@@ -8,6 +8,7 @@ import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { tokenCache } from "@/lib/cache";
 import { useAuth } from "@clerk/clerk-expo";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import ModalHeaderText from "@/components/ModalHeaderText";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -95,6 +96,8 @@ function RootLayoutNav() {
           options={{
             presentation: "transparentModal",
             animation: "fade",
+            headerTransparent: true,
+            headerTitle: () => ModalHeaderText(),
             headerLeft: () => (
               <TouchableOpacity onPress={() => router.back()}>
                 <Ionicons name="close-outline" size={24} />
