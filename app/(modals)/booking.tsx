@@ -83,8 +83,8 @@ const Booking = () => {
           <AnimatedTouchableOpacity
             onPress={() => setOpenCard(0)}
             style={styles.cardPreview}
-            entering={FadeIn.duration(200)}
-            exiting={FadeOut.duration(200)}
+            entering={FadeIn.duration(20)}
+            exiting={FadeOut.duration(20)}
           >
             <Text style={styles.previewText}>Where</Text>
             <Text style={styles.previewdData}>
@@ -148,8 +148,8 @@ const Booking = () => {
           <AnimatedTouchableOpacity
             onPress={() => setOpenCard(1)}
             style={styles.cardPreview}
-            entering={FadeIn.duration(200)}
-            exiting={FadeOut.duration(200)}
+            entering={FadeIn.duration(20)}
+            exiting={FadeOut.duration(20)}
           >
             <Text style={styles.previewText}>When</Text>
             <Text style={styles.previewdData}>{selectedDate}</Text>
@@ -185,8 +185,8 @@ const Booking = () => {
           <AnimatedTouchableOpacity
             onPress={() => setOpenCard(2)}
             style={styles.cardPreview}
-            entering={FadeIn.duration(200)}
-            exiting={FadeOut.duration(200)}
+            entering={FadeIn.duration(20)}
+            exiting={FadeOut.duration(20)}
           >
             <Text style={styles.previewText}>Who</Text>
             <Text style={styles.previewdData}>{guestsSummary}</Text>
