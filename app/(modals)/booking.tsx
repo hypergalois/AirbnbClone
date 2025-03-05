@@ -53,11 +53,25 @@ const Booking = () => {
   const [openCard, setOpenCard] = useState(0);
   const [selectedPlace, setSelectedPlace] = useState(0);
 
-  const [groups, setGroups] = useState(guestsGroups);
+  const [selectedDate, setSelectedDate] = useState("Any week");
   const today = new Date().toISOString().substring(0, 10);
+
+  const [groups, setGroups] = useState(guestsGroups);
+  const [guestsSummary, setGuestsSummary] = useState("Add guests");
+
+  const updateGuestsSummary = (newGroups: any) => {
+    const totalGuests = newGroups.reduce(
+      (sum: number, group: { count: number }) => sum + group.count,
+      0
+    );
+    setGuestsSummary(totalGuests > 0 ? `${totalGuests} guests` : "Add guests");
+  };
 
   const onClearAll = () => {
     setSelectedPlace(0);
+    setSelectedDate("Any week");
+    setGroups(guestsGroups);
+    setGuestsSummary("Add guests");
     setOpenCard(0);
   };
 
@@ -138,7 +152,7 @@ const Booking = () => {
             exiting={FadeOut.duration(200)}
           >
             <Text style={styles.previewText}>When</Text>
-            <Text style={styles.previewdData}>Any week</Text>
+            <Text style={styles.previewdData}>{selectedDate}</Text>
           </AnimatedTouchableOpacity>
         )}
 
@@ -158,6 +172,7 @@ const Booking = () => {
               current={today}
               selected={today}
               mode={"calendar"}
+              onSelectedChange={(date) => setSelectedDate(date)}
             />
           </Animated.View>
         )}
@@ -173,7 +188,7 @@ const Booking = () => {
             exiting={FadeOut.duration(200)}
           >
             <Text style={styles.previewText}>Who</Text>
-            <Text style={styles.previewdData}>Add guests</Text>
+            <Text style={styles.previewdData}>{guestsSummary}</Text>
           </AnimatedTouchableOpacity>
         )}
 
@@ -217,12 +232,12 @@ const Booking = () => {
                   <TouchableOpacity
                     onPress={() => {
                       const newGroups = [...groups];
-                      newGroups[index].count =
-                        newGroups[index].count > 0
-                          ? newGroups[index].count - 1
-                          : 0;
-
+                      newGroups[index].count = Math.max(
+                        0,
+                        newGroups[index].count - 1
+                      );
                       setGroups(newGroups);
+                      updateGuestsSummary(newGroups);
                     }}
                   >
                     <Ionicons
@@ -246,6 +261,7 @@ const Booking = () => {
                       const newGroups = [...groups];
                       newGroups[index].count++;
                       setGroups(newGroups);
+                      updateGuestsSummary(newGroups);
                     }}
                   >
                     <Ionicons
