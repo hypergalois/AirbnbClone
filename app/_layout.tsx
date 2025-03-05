@@ -11,6 +11,14 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ModalHeaderText from "@/components/ModalHeaderText";
 import Colors from "@/constants/Colors";
 
+// Ignore warnings from the DatePicker and Header components.
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs([
+  "Warning: DatePicker: Support for defaultProps",
+  "Warning: Header: Support for defaultProps",
+]);
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
