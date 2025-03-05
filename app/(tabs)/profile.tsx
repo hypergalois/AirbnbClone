@@ -8,7 +8,7 @@ import {
   TextInput,
   Button,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
 import { useAuth, useUser } from "@clerk/clerk-expo";
@@ -23,6 +23,16 @@ const Profile = () => {
   const [lastName, setLastName] = useState(user?.lastName);
   const [email, setEmail] = useState(user?.emailAddresses[0].emailAddress);
   const [edit, setEdit] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
+    setEmail(user.emailAddresses[0].emailAddress);
+  }, [user]);
 
   const onSaveUser = async () => {};
   const onCaptureImage = async () => {};
@@ -104,7 +114,7 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   header: {
-    fontFamily: "mon-b",
+    fontFamily: "Montserrat-Bold",
     fontSize: 24,
   },
   card: {
