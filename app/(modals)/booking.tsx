@@ -1,10 +1,26 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+} from "react-native";
 import React from "react";
 import { BlurView } from "expo-blur";
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
-import Animated, { SlideInDown } from "react-native-reanimated";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  SlideInDown,
+} from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import DatePicker from "react-native-modern-datepicker";
+
+const AnimatedTouchableOpacity =
+  Animated.createAnimatedComponent(TouchableOpacity);
 
 const guestsGroups = [
   {
@@ -30,6 +46,8 @@ const guestsGroups = [
 ];
 
 const Booking = () => {
+  const router = useRouter();
+
   return (
     <BlurView intensity={70} style={styles.container} tint="light">
       {/*  Where */}
