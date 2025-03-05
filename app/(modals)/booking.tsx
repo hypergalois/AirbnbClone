@@ -103,7 +103,7 @@ const Booking = () => {
                         : styles.place
                     }
                   />
-                  <Text style={{ fontFamily: "mon", paddingTop: 6 }}>
+                  <Text style={{ fontFamily: "Montserrat", paddingTop: 6 }}>
                     {item.title}
                   </Text>
                 </TouchableOpacity>
@@ -135,8 +135,8 @@ const Booking = () => {
           <Animated.View style={styles.cardBody}>
             <DatePicker
               options={{
-                defaultFont: "mon",
-                headerFont: "mon-sb",
+                defaultFont: "Montserrat",
+                headerFont: "Montserrat-SemiBold",
                 mainColor: Colors.primary,
                 borderColor: "transparent",
               }}
@@ -175,12 +175,14 @@ const Booking = () => {
                 ]}
               >
                 <View>
-                  <Text style={{ fontFamily: "mon-sb", fontSize: 14 }}>
+                  <Text
+                    style={{ fontFamily: "Montserrat-SemiBold", fontSize: 14 }}
+                  >
                     {item.name}
                   </Text>
                   <Text
                     style={{
-                      fontFamily: "mon",
+                      fontFamily: "Montserrat",
                       fontSize: 14,
                       color: Colors.grey,
                     }}
@@ -216,7 +218,7 @@ const Booking = () => {
                   </TouchableOpacity>
                   <Text
                     style={{
-                      fontFamily: "mon",
+                      fontFamily: "Montserrat",
                       fontSize: 16,
                       minWidth: 18,
                       textAlign: "center",
@@ -263,7 +265,7 @@ const Booking = () => {
             <Text
               style={{
                 fontSize: 18,
-                fontFamily: "mon-sb",
+                fontFamily: "Montserrat-SemiBold",
                 textDecorationLine: "underline",
               }}
             >
