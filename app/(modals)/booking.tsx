@@ -1,15 +1,249 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 import Colors from "@/constants/Colors";
+import { defaultStyles } from "@/constants/Styles";
+import Animated, { SlideInDown } from "react-native-reanimated";
+import { Ionicons } from "@expo/vector-icons";
 
 const Booking = () => {
   return (
-    <BlurView intensity={100} style={{ flex: 1 }}>
-      <SafeAreaView>
-        <Text>Booking</Text>
-      </SafeAreaView>
+    <BlurView intensity={70} style={styles.container} tint="light">
+      {/*  Where */}
+      <View style={styles.card}>
+        {openCard != 0 && (
+          <AnimatedTouchableOpacity
+            onPress={() => setOpenCard(0)}
+            style={styles.cardPreview}
+            entering={FadeIn.duration(200)}
+            exiting={FadeOut.duration(200)}
+          >
+            <Text style={styles.previewText}>Where</Text>
+            <Text style={styles.previewdData}>I'm flexible</Text>
+          </AnimatedTouchableOpacity>
+        )}
+
+        {openCard == 0 && <Text style={styles.cardHeader}>Where to?</Text>}
+        {openCard == 0 && (
+          <Animated.View
+            entering={FadeIn}
+            exiting={FadeOut}
+            style={styles.cardBody}
+          >
+            <View style={styles.searchSection}>
+              <Ionicons
+                style={styles.searchIcon}
+                name="ios-search"
+                size={20}
+                color="#000"
+              />
+              <TextInput
+                style={styles.inputField}
+                placeholder="Search destinations"
+                placeholderTextColor={Colors.grey}
+              />
+            </View>
+
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.placesContainer}
+            >
+              {places.map((item, index) => (
+                <TouchableOpacity
+                  onPress={() => setSelectedPlace(index)}
+                  key={index}
+                >
+                  <Image
+                    source={item.img}
+                    style={
+                      selectedPlace == index
+                        ? styles.placeSelected
+                        : styles.place
+                    }
+                  />
+                  <Text style={{ fontFamily: "mon", paddingTop: 6 }}>
+                    {item.title}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </Animated.View>
+        )}
+      </View>
+
+      {/* When */}
+      <View style={styles.card}>
+        {openCard != 1 && (
+          <AnimatedTouchableOpacity
+            onPress={() => setOpenCard(1)}
+            style={styles.cardPreview}
+            entering={FadeIn.duration(200)}
+            exiting={FadeOut.duration(200)}
+          >
+            <Text style={styles.previewText}>When</Text>
+            <Text style={styles.previewdData}>Any week</Text>
+          </AnimatedTouchableOpacity>
+        )}
+
+        {openCard == 1 && (
+          <Text style={styles.cardHeader}>When's your trip?</Text>
+        )}
+
+        {openCard == 1 && (
+          <Animated.View style={styles.cardBody}>
+            <DatePicker
+              options={{
+                defaultFont: "mon",
+                headerFont: "mon-sb",
+                mainColor: Colors.primary,
+                borderColor: "transparent",
+              }}
+              current={today}
+              selected={today}
+              mode={"calendar"}
+            />
+          </Animated.View>
+        )}
+      </View>
+
+      {/* Guests */}
+      <View style={styles.card}>
+        {openCard != 2 && (
+          <AnimatedTouchableOpacity
+            onPress={() => setOpenCard(2)}
+            style={styles.cardPreview}
+            entering={FadeIn.duration(200)}
+            exiting={FadeOut.duration(200)}
+          >
+            <Text style={styles.previewText}>Who</Text>
+            <Text style={styles.previewdData}>Add guests</Text>
+          </AnimatedTouchableOpacity>
+        )}
+
+        {openCard == 2 && <Text style={styles.cardHeader}>Who's coming?</Text>}
+
+        {openCard == 2 && (
+          <Animated.View style={styles.cardBody}>
+            {groups.map((item, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.guestItem,
+                  index + 1 < guestsGropus.length ? styles.itemBorder : null,
+                ]}
+              >
+                <View>
+                  <Text style={{ fontFamily: "mon-sb", fontSize: 14 }}>
+                    {item.name}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: "mon",
+                      fontSize: 14,
+                      color: Colors.grey,
+                    }}
+                  >
+                    {item.text}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    gap: 10,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      const newGroups = [...groups];
+                      newGroups[index].count =
+                        newGroups[index].count > 0
+                          ? newGroups[index].count - 1
+                          : 0;
+
+                      setGroups(newGroups);
+                    }}
+                  >
+                    <Ionicons
+                      name="remove-circle-outline"
+                      size={26}
+                      color={groups[index].count > 0 ? Colors.grey : "#cdcdcd"}
+                    />
+                  </TouchableOpacity>
+                  <Text
+                    style={{
+                      fontFamily: "mon",
+                      fontSize: 16,
+                      minWidth: 18,
+                      textAlign: "center",
+                    }}
+                  >
+                    {item.count}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      const newGroups = [...groups];
+                      newGroups[index].count++;
+                      setGroups(newGroups);
+                    }}
+                  >
+                    <Ionicons
+                      name="add-circle-outline"
+                      size={26}
+                      color={Colors.grey}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
+          </Animated.View>
+        )}
+      </View>
+
+      {/* Footer */}
+      <Animated.View
+        style={defaultStyles.footer}
+        entering={SlideInDown.delay(200)}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity
+            style={{ height: "100%", justifyContent: "center" }}
+            onPress={onClearAll}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                fontFamily: "mon-sb",
+                textDecorationLine: "underline",
+              }}
+            >
+              Clear all
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[defaultStyles.btn, { paddingRight: 20, paddingLeft: 50 }]}
+            onPress={() => router.back()}
+          >
+            <Ionicons
+              name="search-outline"
+              size={24}
+              style={defaultStyles.btnIcon}
+              color={"#fff"}
+            />
+            <Text style={defaultStyles.btnText}>Search</Text>
+          </TouchableOpacity>
+        </View>
+      </Animated.View>
     </BlurView>
   );
 };
