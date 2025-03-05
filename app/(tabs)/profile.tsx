@@ -1,11 +1,82 @@
-import { View, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+  TextInput,
+} from "react-native";
 import React from "react";
+import { Ionicons } from "@expo/vector-icons";
+import Colors from "@/constants/Colors";
 
 const Profile = () => {
   return (
-    <View>
-      <Text>Profile</Text>
-    </View>
+    <SafeAreaView style={defaultStyles.container}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.header}>Profile</Text>
+        <Ionicons name="notifications-outline" size={26} />
+      </View>
+
+      {user && (
+        <View style={styles.card}>
+          <TouchableOpacity onPress={onCaptureImage}>
+            <Image source={{ uri: user?.imageUrl }} style={styles.avatar} />
+          </TouchableOpacity>
+          <View style={{ flexDirection: "row", gap: 6 }}>
+            {!edit && (
+              <View style={styles.editRow}>
+                <Text style={{ fontFamily: "mon-b", fontSize: 22 }}>
+                  {firstName} {lastName}
+                </Text>
+                <TouchableOpacity onPress={() => setEdit(true)}>
+                  <Ionicons
+                    name="create-outline"
+                    size={24}
+                    color={Colors.dark}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+            {edit && (
+              <View style={styles.editRow}>
+                <TextInput
+                  placeholder="First Name"
+                  value={firstName || ""}
+                  onChangeText={setFirstName}
+                  style={[defaultStyles.inputField, { width: 100 }]}
+                />
+                <TextInput
+                  placeholder="Last Name"
+                  value={lastName || ""}
+                  onChangeText={setLastName}
+                  style={[defaultStyles.inputField, { width: 100 }]}
+                />
+                <TouchableOpacity onPress={onSaveUser}>
+                  <Ionicons
+                    name="checkmark-outline"
+                    size={24}
+                    color={Colors.dark}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+          <Text>{email}</Text>
+          <Text>Since {user?.createdAt!.toLocaleDateString()}</Text>
+        </View>
+      )}
+
+      {isSignedIn && (
+        <Button title="Log Out" onPress={() => signOut()} color={Colors.dark} />
+      )}
+      {!isSignedIn && (
+        <Link href={"/(modals)/login"} asChild>
+          <Button title="Log In" color={Colors.dark} />
+        </Link>
+      )}
+    </SafeAreaView>
   );
 };
 
