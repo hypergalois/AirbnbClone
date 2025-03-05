@@ -173,6 +173,7 @@ const Booking = () => {
               selected={today}
               mode={"calendar"}
               onSelectedChange={(date) => setSelectedDate(date)}
+              minimumDate={today}
             />
           </Animated.View>
         )}
