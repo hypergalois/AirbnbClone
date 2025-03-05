@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  TextInput,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { BlurView } from "expo-blur";
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
@@ -17,6 +18,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { places } from "@/assets/data/places";
 import DatePicker from "react-native-modern-datepicker";
 
 const AnimatedTouchableOpacity =
@@ -48,6 +50,17 @@ const guestsGroups = [
 const Booking = () => {
   const router = useRouter();
 
+  const [openCard, setOpenCard] = useState(0);
+  const [selectedPlace, setSelectedPlace] = useState(0);
+
+  const [groups, setGroups] = useState(guestsGroups);
+  const today = new Date().toISOString().substring(0, 10);
+
+  const onClearAll = () => {
+    setSelectedPlace(0);
+    setOpenCard(0);
+  };
+
   return (
     <BlurView intensity={70} style={styles.container} tint="light">
       {/*  Where */}
@@ -74,7 +87,7 @@ const Booking = () => {
             <View style={styles.searchSection}>
               <Ionicons
                 style={styles.searchIcon}
-                name="ios-search"
+                name="search"
                 size={20}
                 color="#000"
               />
