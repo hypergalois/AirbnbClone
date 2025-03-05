@@ -14,6 +14,7 @@ import Colors from "@/constants/Colors";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { defaultStyles } from "@/constants/Styles";
 import { Link } from "expo-router";
+import * as ImagePicker from "expo-image-picker";
 
 const Profile = () => {
   const { signOut, isSignedIn } = useAuth();
@@ -47,7 +48,21 @@ const Profile = () => {
     }
   };
 
-  const onCaptureImage = async () => {};
+  const onCaptureImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      quality: 0.75,
+      base64: true,
+    });
+
+    if (!result.canceled) {
+      const base64 = `data:image/png;base64,${result.assets[0].base64}`;
+      user?.setProfileImage({
+        file: base64,
+      });
+    }
+  };
 
   return (
     <SafeAreaView style={defaultStyles.container}>
