@@ -3,8 +3,6 @@
 # dependencies
 node_modules/
 
-assets/gif/*.mp4
-
 # Expo
 .expo/
 dist/
