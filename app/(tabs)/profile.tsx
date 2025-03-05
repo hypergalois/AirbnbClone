@@ -34,7 +34,19 @@ const Profile = () => {
     setEmail(user.emailAddresses[0].emailAddress);
   }, [user]);
 
-  const onSaveUser = async () => {};
+  const onSaveUser = async () => {
+    try {
+      await user?.update({
+        firstName: firstName!,
+        lastName: lastName!,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setEdit(false);
+    }
+  };
+
   const onCaptureImage = async () => {};
 
   return (
@@ -52,7 +64,7 @@ const Profile = () => {
           <View style={{ flexDirection: "row", gap: 6 }}>
             {!edit && (
               <View style={styles.editRow}>
-                <Text style={{ fontFamily: "mon-b", fontSize: 22 }}>
+                <Text style={{ fontFamily: "Montserrat-Bold", fontSize: 22 }}>
                   {firstName} {lastName}
                 </Text>
                 <TouchableOpacity onPress={() => setEdit(true)}>
