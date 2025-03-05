@@ -6,6 +6,29 @@ import { defaultStyles } from "@/constants/Styles";
 import Animated, { SlideInDown } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
 
+const guestsGroups = [
+  {
+    name: "Adults",
+    text: "Ages 13 or above",
+    count: 0,
+  },
+  {
+    name: "Children",
+    text: "Ages 2-12",
+    count: 0,
+  },
+  {
+    name: "Infants",
+    text: "Under 2",
+    count: 0,
+  },
+  {
+    name: "Pets",
+    text: "Pets allowed",
+    count: 0,
+  },
+];
+
 const Booking = () => {
   return (
     <BlurView intensity={70} style={styles.container} tint="light">
@@ -130,7 +153,7 @@ const Booking = () => {
                 key={index}
                 style={[
                   styles.guestItem,
-                  index + 1 < guestsGropus.length ? styles.itemBorder : null,
+                  index + 1 < guestsGroups.length ? styles.itemBorder : null,
                 ]}
               >
                 <View>
