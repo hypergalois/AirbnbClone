@@ -73,7 +73,9 @@ const Booking = () => {
             exiting={FadeOut.duration(200)}
           >
             <Text style={styles.previewText}>Where</Text>
-            <Text style={styles.previewdData}>I'm flexible</Text>
+            <Text style={styles.previewdData}>
+              {places[selectedPlace].title}
+            </Text>
           </AnimatedTouchableOpacity>
         )}
 
